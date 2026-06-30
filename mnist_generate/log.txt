@@ -1,0 +1,3 @@
+mnist_generate gallery — 23 cards
+crisp generator runs\20260629-162727_progress_mnist_generate_steps2500_seed0\checkpoints\mnist_generate\mnist_generate__best.pt  (87503 params, R=24, alpha=0.5)
+progression from 20260629-162727_progress_mnist_generate_steps2500_seed0: 23 milestones, final gen-MSE 0.0000 (nmse 0.0001)

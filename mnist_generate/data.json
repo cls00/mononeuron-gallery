@@ -1,0 +1,209 @@
+[
+ {
+  "label": "Step 0",
+  "kind": "progression",
+  "order": 0,
+  "poster": "cards/0_prog_0000.png",
+  "gif": "gifs/0_prog_0000.gif",
+  "caption": "training step 0 \u00b7 generation MSE 0.2124 (1.00\u00d7 the constant-image baseline)",
+  "hero": false
+ },
+ {
+  "label": "Step 21",
+  "kind": "progression",
+  "order": 1,
+  "poster": "cards/0_prog_0021.png",
+  "gif": "gifs/0_prog_0021.gif",
+  "caption": "training step 21 \u00b7 generation MSE 0.0501 (0.24\u00d7 the constant-image baseline)",
+  "hero": false
+ },
+ {
+  "label": "Step 129",
+  "kind": "progression",
+  "order": 2,
+  "poster": "cards/0_prog_0129.png",
+  "gif": "gifs/0_prog_0129.gif",
+  "caption": "training step 129 \u00b7 generation MSE 0.0318 (0.15\u00d7 the constant-image baseline)",
+  "hero": false
+ },
+ {
+  "label": "Step 186",
+  "kind": "progression",
+  "order": 3,
+  "poster": "cards/0_prog_0186.png",
+  "gif": "gifs/0_prog_0186.gif",
+  "caption": "training step 186 \u00b7 generation MSE 0.0038 (0.02\u00d7 the constant-image baseline)",
+  "hero": false
+ },
+ {
+  "label": "Step 2,066",
+  "kind": "progression",
+  "order": 4,
+  "poster": "cards/0_prog_2066.png",
+  "gif": "gifs/0_prog_2066.gif",
+  "caption": "training step 2,066 \u00b7 generation MSE 0.0000 (0.00\u00d7 the constant-image baseline)",
+  "hero": true
+ },
+ {
+  "label": "Digit 0",
+  "kind": "settle",
+  "order": 5,
+  "poster": "cards/1_settle_0.png",
+  "gif": "gifs/1_settle_0.gif",
+  "caption": "class 0 forming from a noise init \u2014 the image is the self-loop",
+  "hero": false
+ },
+ {
+  "label": "Digit 1",
+  "kind": "settle",
+  "order": 6,
+  "poster": "cards/1_settle_1.png",
+  "gif": "gifs/1_settle_1.gif",
+  "caption": "class 1 forming from a noise init \u2014 the image is the self-loop",
+  "hero": false
+ },
+ {
+  "label": "Digit 2",
+  "kind": "settle",
+  "order": 7,
+  "poster": "cards/1_settle_2.png",
+  "gif": "gifs/1_settle_2.gif",
+  "caption": "class 2 forming from a noise init \u2014 the image is the self-loop",
+  "hero": false
+ },
+ {
+  "label": "Digit 3",
+  "kind": "settle",
+  "order": 8,
+  "poster": "cards/1_settle_3.png",
+  "gif": "gifs/1_settle_3.gif",
+  "caption": "class 3 forming from a noise init \u2014 the image is the self-loop",
+  "hero": false
+ },
+ {
+  "label": "Digit 4",
+  "kind": "settle",
+  "order": 9,
+  "poster": "cards/1_settle_4.png",
+  "gif": "gifs/1_settle_4.gif",
+  "caption": "class 4 forming from a noise init \u2014 the image is the self-loop",
+  "hero": false
+ },
+ {
+  "label": "Digit 5",
+  "kind": "settle",
+  "order": 10,
+  "poster": "cards/1_settle_5.png",
+  "gif": "gifs/1_settle_5.gif",
+  "caption": "class 5 forming from a noise init \u2014 the image is the self-loop",
+  "hero": false
+ },
+ {
+  "label": "Digit 6",
+  "kind": "settle",
+  "order": 11,
+  "poster": "cards/1_settle_6.png",
+  "gif": "gifs/1_settle_6.gif",
+  "caption": "class 6 forming from a noise init \u2014 the image is the self-loop",
+  "hero": false
+ },
+ {
+  "label": "Digit 7",
+  "kind": "settle",
+  "order": 12,
+  "poster": "cards/1_settle_7.png",
+  "gif": "gifs/1_settle_7.gif",
+  "caption": "class 7 forming from a noise init \u2014 the image is the self-loop",
+  "hero": false
+ },
+ {
+  "label": "Digit 8",
+  "kind": "settle",
+  "order": 13,
+  "poster": "cards/1_settle_8.png",
+  "gif": "gifs/1_settle_8.gif",
+  "caption": "class 8 forming from a noise init \u2014 the image is the self-loop",
+  "hero": false
+ },
+ {
+  "label": "Digit 9",
+  "kind": "settle",
+  "order": 14,
+  "poster": "cards/1_settle_9.png",
+  "gif": "gifs/1_settle_9.gif",
+  "caption": "class 9 forming from a noise init \u2014 the image is the self-loop",
+  "hero": false
+ },
+ {
+  "label": "Morph 3 \u2192 8",
+  "kind": "morph",
+  "order": 15,
+  "poster": "cards/2_morph_3_8.png",
+  "gif": "gifs/2_morph_3_8.gif",
+  "caption": "settle 3, then switch the class one-hot to 8 keeping the image",
+  "hero": false
+ },
+ {
+  "label": "Morph 1 \u2192 7",
+  "kind": "morph",
+  "order": 16,
+  "poster": "cards/2_morph_1_7.png",
+  "gif": "gifs/2_morph_1_7.gif",
+  "caption": "settle 1, then switch the class one-hot to 7 keeping the image",
+  "hero": false
+ },
+ {
+  "label": "Morph 4 \u2192 9",
+  "kind": "morph",
+  "order": 17,
+  "poster": "cards/2_morph_4_9.png",
+  "gif": "gifs/2_morph_4_9.gif",
+  "caption": "settle 4, then switch the class one-hot to 9 keeping the image",
+  "hero": false
+ },
+ {
+  "label": "Morph 0 \u2192 6",
+  "kind": "morph",
+  "order": 18,
+  "poster": "cards/2_morph_0_6.png",
+  "gif": "gifs/2_morph_0_6.gif",
+  "caption": "settle 0, then switch the class one-hot to 6 keeping the image",
+  "hero": false
+ },
+ {
+  "label": "Scratch & regenerate 0",
+  "kind": "scratch",
+  "order": 19,
+  "poster": "cards/3_scratch_0.png",
+  "gif": "gifs/3_scratch_0.gif",
+  "caption": "class 0 settled, scribbled over with a pencil, then regenerated as it autoregresses",
+  "hero": false
+ },
+ {
+  "label": "Scratch & regenerate 2",
+  "kind": "scratch",
+  "order": 20,
+  "poster": "cards/3_scratch_2.png",
+  "gif": "gifs/3_scratch_2.gif",
+  "caption": "class 2 settled, scribbled over with a pencil, then regenerated as it autoregresses",
+  "hero": false
+ },
+ {
+  "label": "Scratch & regenerate 3",
+  "kind": "scratch",
+  "order": 21,
+  "poster": "cards/3_scratch_3.png",
+  "gif": "gifs/3_scratch_3.gif",
+  "caption": "class 3 settled, scribbled over with a pencil, then regenerated as it autoregresses",
+  "hero": false
+ },
+ {
+  "label": "Scratch & regenerate 7",
+  "kind": "scratch",
+  "order": 22,
+  "poster": "cards/3_scratch_7.png",
+  "gif": "gifs/3_scratch_7.gif",
+  "caption": "class 7 settled, scribbled over with a pencil, then regenerated as it autoregresses",
+  "hero": false
+ }
+]

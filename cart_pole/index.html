@@ -1,0 +1,120 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cart-Pole Swing-Up — Results Gallery</title><style>
+ :root{--face:#d4d0c8;--face2:#cbc7bd;--lite:#ffffff;--dark:#808080;--vdark:#404040;--accent:#2c5d57;--ink:#1b1b1b}
+ *{box-sizing:border-box}
+ body{margin:0;padding:24px;font:13px/1.5 Tahoma,"MS Sans Serif",Geneva,Verdana,sans-serif;color:var(--ink);background:#3c4448}
+ .app{max-width:1320px;margin:0 auto;background:var(--face);border:2px solid;border-color:var(--lite) var(--vdark) var(--vdark) var(--lite);padding:3px}
+ .hdr{background:var(--accent);color:#eef3f1;padding:7px 11px;border:2px solid;border-color:#4f857e #163230 #163230 #4f857e}
+ .hdr .name{font-weight:bold;font-size:15px;letter-spacing:.04em}
+ .hdr .home{float:right;font-size:12px;color:#cfe1dd;text-decoration:none;font-weight:bold}
+ .hdr .home:hover{color:#fff;text-decoration:underline}
+ .hdr .sub{font-size:12px;color:#bcd2ce;margin-top:2px}
+ .body{padding:9px}
+ fieldset{border:2px groove var(--face);margin:0 0 9px;padding:7px 10px;background:var(--face)}
+ legend{font-weight:bold;color:var(--accent);padding:0 5px}
+ .row{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin:3px 0}
+ .row b.lbl{width:46px;color:#333}
+ button{font:11px Tahoma,"MS Sans Serif",sans-serif;color:#000;cursor:pointer;padding:3px 11px;margin:1px;
+  border:2px solid;border-color:var(--lite) var(--vdark) var(--vdark) var(--lite);background:var(--face)}
+ button:hover{background:var(--face2)}
+ button:active,button.on{border-color:var(--vdark) var(--lite) var(--lite) var(--vdark);background:var(--face2);box-shadow:inset 1px 1px 2px rgba(0,0,0,.25)}
+ button.on{font-weight:bold;color:var(--accent)}
+ #grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:2px}
+ .card{background:var(--face);padding:2px;cursor:pointer;border:1px solid var(--dark)}
+ .card:hover{background:var(--face2)}
+ .card.arc{border:2px solid var(--accent)}
+ .arctag{position:absolute;left:4px;top:4px;font-size:10px;font-weight:bold;padding:1px 7px;color:#eef3f1;background:rgba(44,93,87,.92);border:1px solid #163230;pointer-events:none}
+ .arcdot{position:absolute;left:4px;top:4px;font-size:10px;padding:0 5px;color:#06402b;background:#bfe6c2;border:1px solid #06402b;pointer-events:none}
+ .card .frame{position:relative;border:1px solid var(--vdark);background:#fff;overflow:hidden}
+ .card .frame img{width:100%;display:block}
+ .card .frame .gif{position:absolute;inset:0;display:none}
+ .card.play .gif{display:block}
+ .card .play-tag{position:absolute;right:4px;top:4px;font-size:11px;padding:1px 6px;color:#eef3f1;background:rgba(44,93,87,.85);border:1px solid #163230;pointer-events:none}
+ .card.play .play-tag{display:none}
+ .meta{margin-top:3px;color:#222}
+ .meta .phase{color:var(--accent);font-weight:bold;font-size:11px;letter-spacing:.02em;text-transform:uppercase}
+ .nums{color:#444;font-size:13px;margin-top:2px;font-family:"Courier New",monospace}
+ .status{display:flex;gap:5px;margin-top:3px;padding:2px}
+ .status span{border:2px solid;border-color:var(--dark) var(--lite) var(--lite) var(--dark);background:var(--face);padding:2px 9px;color:#333}
+ .status .grow{flex:1}
+ #lb{position:fixed;inset:0;background:rgba(10,14,16,.6);display:none;align-items:center;justify-content:center;z-index:20}
+ .dlg{background:var(--face);max-width:94vw;max-height:94vh;display:flex;flex-direction:column;padding:3px;
+  border:2px solid;border-color:var(--lite) var(--vdark) var(--vdark) var(--lite);box-shadow:0 10px 34px rgba(0,0,0,.55)}
+ .dlg .bar{background:var(--accent);color:#eef3f1;font-weight:bold;padding:5px 9px;display:flex;align-items:center;border:2px solid;border-color:#4f857e #163230 #163230 #4f857e}
+ .dlg .bar .grow{flex:1}
+ .dlg .pane{padding:9px;display:flex;align-items:center;gap:4px}
+ .dlg img{max-width:82vw;max-height:72vh;background:#fff;border:2px solid;border-color:var(--vdark) var(--lite) var(--lite) var(--vdark)}
+ .nav{font:bold 24px Tahoma;color:var(--accent);padding:0 12px;cursor:pointer;user-select:none}
+ .nav:hover{color:#000}
+ #lbcap{padding:5px 9px;color:#222;font-family:"Courier New",monospace;border:2px solid;border-color:var(--dark) var(--lite) var(--lite) var(--dark);background:var(--face);margin-top:3px}
+</style></head><body>
+<div class="app">
+ <div class="hdr"><a class="home" href="../index.html">&#8962; all tasks</a><div class="name">Cart-Pole Swing-Up — Results Gallery</div>
+  <div class="sub">Single inverted pendulum on a cart &mdash; each specimen swings up from deadhang; hover (or tap) a card to replay it</div></div>
+ <div class="body">
+  <fieldset><legend>View</legend>
+   <div class="row"><b class="lbl">Show:</b><button id="varc" class="on">0-to-hero arc</button><button id="vall">full population</button></div>
+  </fieldset>
+  <fieldset id="filt"><legend>Filter &amp; sort (full population)</legend>
+   <div class="row"><b class="lbl">Kind:</b><span id="kinds"></span></div>
+   <div class="row" id="bar"><b class="lbl">Sort:</b><button data-sort="gen" class="on">generation</button><button data-sort="hold" class="">hold</button><button data-sort="vhold" class="">velocity</button><button data-sort="revs" class="">revolutions</button><button data-sort="effort" class="">effort</button><button data-sort="jitter" class="">jitter</button><button data-sort="peak" class="">peak cos</button></div>
+  </fieldset>
+  <fieldset><legend>Specimens</legend><div id="grid"></div></fieldset>
+ </div>
+ <div class="status"><span id="count"></span><span id="sortinfo"></span><span class="grow"></span>
+  <span>single interaction site</span></div>
+</div>
+<div id="lb"><div class="dlg">
+ <div class="bar"><span id="lbttl">specimen</span><span class="grow"></span><button id="lbx">Close</button></div>
+ <div class="pane"><div class="nav" id="prev">&#10094;</div><img id="lbimg"><div class="nav" id="next">&#10095;</div></div>
+ <div id="lbcap"></div>
+</div></div>
+<script>
+const DATA=[{"poster": "cards/000_gen0_gen0_random_init.png", "gif": "gifs/000_gen0_gen0_random_init.gif", "label": "Generation 0", "kind": "gen0", "gen": 0, "arc": true, "arc_rank": 0, "arc_title": "generation zero", "hold": 0.0, "vhold": 999.0, "jitter": 0.0, "effort": 0.0, "peak": -1.0, "revs": 0.0, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 0.00 \u00b7 effort 0.00 \u00b7 peak cos -1.00 \u00b7 revolutions 0.0"}, {"poster": "cards/001_random_rand_x3_s0.png", "gif": "gifs/001_random_rand_x3_s0.gif", "label": "Untrained network", "kind": "random", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 1.0, "effort": 0.86, "peak": -0.99, "revs": 0.1, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 1.00 \u00b7 effort 0.86 \u00b7 peak cos -0.99 \u00b7 revolutions 0.1"}, {"poster": "cards/002_random_rand_x3_s1.png", "gif": "gifs/002_random_rand_x3_s1.gif", "label": "Untrained network", "kind": "random", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 0.01, "effort": 0.08, "peak": -0.98, "revs": 0.1, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 0.01 \u00b7 effort 0.08 \u00b7 peak cos -0.98 \u00b7 revolutions 0.1"}, {"poster": "cards/003_random_rand_x3_s2.png", "gif": "gifs/003_random_rand_x3_s2.gif", "label": "Untrained network", "kind": "random", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 0.04, "effort": 0.52, "peak": -0.04, "revs": 0.6, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 0.04 \u00b7 effort 0.52 \u00b7 peak cos -0.04 \u00b7 revolutions 0.6"}, {"poster": "cards/004_random_rand_x3_s3.png", "gif": "gifs/004_random_rand_x3_s3.gif", "label": "Untrained network", "kind": "random", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 0.0, "effort": 0.03, "peak": -1.0, "revs": 0.0, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 0.00 \u00b7 effort 0.03 \u00b7 peak cos -1.00 \u00b7 revolutions 0.0"}, {"poster": "cards/005_random_rand_x6_s0.png", "gif": "gifs/005_random_rand_x6_s0.gif", "label": "Untrained network", "kind": "random", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 1.0, "effort": 1.0, "peak": -1.0, "revs": 0.1, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 1.00 \u00b7 effort 1.00 \u00b7 peak cos -1.00 \u00b7 revolutions 0.1"}, {"poster": "cards/006_random_rand_x6_s1.png", "gif": "gifs/006_random_rand_x6_s1.gif", "label": "Untrained network", "kind": "random", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 0.94, "effort": 0.96, "peak": -0.98, "revs": 0.1, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 0.94 \u00b7 effort 0.96 \u00b7 peak cos -0.98 \u00b7 revolutions 0.1"}, {"poster": "cards/007_random_rand_x6_s2.png", "gif": "gifs/007_random_rand_x6_s2.gif", "label": "Untrained network", "kind": "random", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 0.42, "effort": 0.97, "peak": -0.02, "revs": 0.6, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 0.42 \u00b7 effort 0.97 \u00b7 peak cos -0.02 \u00b7 revolutions 0.6"}, {"poster": "cards/008_random_rand_x6_s3.png", "gif": "gifs/008_random_rand_x6_s3.gif", "label": "Untrained network", "kind": "random", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 1.0, "effort": 0.99, "peak": -1.0, "revs": 0.1, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 1.00 \u00b7 effort 0.99 \u00b7 peak cos -1.00 \u00b7 revolutions 0.1"}, {"poster": "cards/009_random_rand_x10_s0.png", "gif": "gifs/009_random_rand_x10_s0.gif", "label": "Untrained network", "kind": "random", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 1.0, "effort": 1.0, "peak": -1.0, "revs": 0.1, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 1.00 \u00b7 effort 1.00 \u00b7 peak cos -1.00 \u00b7 revolutions 0.1"}, {"poster": "cards/010_random_rand_x10_s1.png", "gif": "gifs/010_random_rand_x10_s1.gif", "label": "Untrained network", "kind": "random", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 0.93, "effort": 1.0, "peak": -0.98, "revs": 0.1, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 0.93 \u00b7 effort 1.00 \u00b7 peak cos -0.98 \u00b7 revolutions 0.1"}, {"poster": "cards/011_random_rand_x10_s2.png", "gif": "gifs/011_random_rand_x10_s2.gif", "label": "Untrained network", "kind": "random", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 0.42, "effort": 1.0, "peak": -0.02, "revs": 0.6, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 0.42 \u00b7 effort 1.00 \u00b7 peak cos -0.02 \u00b7 revolutions 0.6"}, {"poster": "cards/012_random_rand_x10_s3.png", "gif": "gifs/012_random_rand_x10_s3.gif", "label": "Untrained network", "kind": "random", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 1.0, "effort": 1.0, "peak": -1.0, "revs": 0.1, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 1.00 \u00b7 effort 1.00 \u00b7 peak cos -1.00 \u00b7 revolutions 0.1"}, {"poster": "cards/013_random_rand_x16_s0.png", "gif": "gifs/013_random_rand_x16_s0.gif", "label": "Untrained network", "kind": "random", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 1.0, "effort": 1.0, "peak": -1.0, "revs": 0.1, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 1.00 \u00b7 effort 1.00 \u00b7 peak cos -1.00 \u00b7 revolutions 0.1"}, {"poster": "cards/014_random_rand_x16_s1.png", "gif": "gifs/014_random_rand_x16_s1.gif", "label": "Untrained network", "kind": "random", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 0.93, "effort": 1.0, "peak": -0.98, "revs": 0.1, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 0.93 \u00b7 effort 1.00 \u00b7 peak cos -0.98 \u00b7 revolutions 0.1"}, {"poster": "cards/015_random_rand_x16_s2.png", "gif": "gifs/015_random_rand_x16_s2.gif", "label": "Untrained network", "kind": "random", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 0.42, "effort": 1.0, "peak": -0.02, "revs": 0.6, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 0.42 \u00b7 effort 1.00 \u00b7 peak cos -0.02 \u00b7 revolutions 0.6"}, {"poster": "cards/016_random_rand_x16_s3.png", "gif": "gifs/016_random_rand_x16_s3.gif", "label": "Untrained network", "kind": "random", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 1.0, "effort": 1.0, "peak": -1.0, "revs": 0.1, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 1.00 \u00b7 effort 1.00 \u00b7 peak cos -1.00 \u00b7 revolutions 0.1"}, {"poster": "cards/017_snapshot_gen0000.png", "gif": "gifs/017_snapshot_gen0000.gif", "label": "Generation 0", "kind": "snapshot", "gen": 0, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 0.0, "vhold": 999.0, "jitter": 0.02, "effort": 0.43, "peak": 0.24, "revs": 0.8, "caption": "hold 0.00 s \u00b7 hold velocity spinning \u00b7 jitter 0.02 \u00b7 effort 0.43 \u00b7 peak cos 0.24 \u00b7 revolutions 0.8"}, {"poster": "cards/018_snapshot_gen0011.png", "gif": "gifs/018_snapshot_gen0011.gif", "label": "Generation 11", "kind": "snapshot", "gen": 11, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 1.33, "vhold": 0.19, "jitter": 0.05, "effort": 0.64, "peak": 1.0, "revs": 2.9, "caption": "hold 1.33 s \u00b7 hold velocity 0.19 rad/s \u00b7 jitter 0.05 \u00b7 effort 0.64 \u00b7 peak cos 1.00 \u00b7 revolutions 2.9"}, {"poster": "cards/019_snapshot_gen0013.png", "gif": "gifs/019_snapshot_gen0013.gif", "label": "Generation 13", "kind": "snapshot", "gen": 13, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 2.94, "vhold": 0.07, "jitter": 0.04, "effort": 0.23, "peak": 1.0, "revs": 1.0, "caption": "hold 2.94 s \u00b7 hold velocity 0.07 rad/s \u00b7 jitter 0.04 \u00b7 effort 0.23 \u00b7 peak cos 1.00 \u00b7 revolutions 1.0"}, {"poster": "cards/020_snapshot_gen0023.png", "gif": "gifs/020_snapshot_gen0023.gif", "label": "Generation 23", "kind": "snapshot", "gen": 23, "arc": true, "arc_rank": 1, "arc_title": "swinging up", "hold": 0.63, "vhold": 0.63, "jitter": 0.46, "effort": 0.99, "peak": 1.0, "revs": 2.5, "caption": "hold 0.63 s \u00b7 hold velocity 0.63 rad/s \u00b7 jitter 0.46 \u00b7 effort 0.99 \u00b7 peak cos 1.00 \u00b7 revolutions 2.5"}, {"poster": "cards/021_snapshot_gen0038.png", "gif": "gifs/021_snapshot_gen0038.gif", "label": "Generation 38", "kind": "snapshot", "gen": 38, "arc": true, "arc_rank": 2, "arc_title": "catches, then falls", "hold": 1.73, "vhold": 0.62, "jitter": 0.56, "effort": 1.0, "peak": 1.0, "revs": 2.9, "caption": "hold 1.73 s \u00b7 hold velocity 0.62 rad/s \u00b7 jitter 0.56 \u00b7 effort 1.00 \u00b7 peak cos 1.00 \u00b7 revolutions 2.9"}, {"poster": "cards/022_snapshot_gen0039.png", "gif": "gifs/022_snapshot_gen0039.gif", "label": "Generation 39", "kind": "snapshot", "gen": 39, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 1.38, "vhold": 0.61, "jitter": 0.54, "effort": 1.0, "peak": 1.0, "revs": 2.9, "caption": "hold 1.38 s \u00b7 hold velocity 0.61 rad/s \u00b7 jitter 0.54 \u00b7 effort 1.00 \u00b7 peak cos 1.00 \u00b7 revolutions 2.9"}, {"poster": "cards/023_snapshot_gen0042.png", "gif": "gifs/023_snapshot_gen0042.gif", "label": "Generation 42", "kind": "snapshot", "gen": 42, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 1.61, "vhold": 0.5, "jitter": 0.42, "effort": 0.85, "peak": 1.0, "revs": 3.3, "caption": "hold 1.61 s \u00b7 hold velocity 0.50 rad/s \u00b7 jitter 0.42 \u00b7 effort 0.85 \u00b7 peak cos 1.00 \u00b7 revolutions 3.3"}, {"poster": "cards/024_snapshot_gen0046.png", "gif": "gifs/024_snapshot_gen0046.gif", "label": "Generation 46", "kind": "snapshot", "gen": 46, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 2.02, "vhold": 0.61, "jitter": 0.76, "effort": 1.0, "peak": 1.0, "revs": 1.6, "caption": "hold 2.02 s \u00b7 hold velocity 0.61 rad/s \u00b7 jitter 0.76 \u00b7 effort 1.00 \u00b7 peak cos 1.00 \u00b7 revolutions 1.6"}, {"poster": "cards/025_snapshot_gen0094.png", "gif": "gifs/025_snapshot_gen0094.gif", "label": "Generation 94", "kind": "snapshot", "gen": 94, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 3.37, "vhold": 0.56, "jitter": 0.71, "effort": 0.96, "peak": 1.0, "revs": 2.3, "caption": "hold 3.37 s \u00b7 hold velocity 0.56 rad/s \u00b7 jitter 0.71 \u00b7 effort 0.96 \u00b7 peak cos 1.00 \u00b7 revolutions 2.3"}, {"poster": "cards/026_snapshot_gen0095.png", "gif": "gifs/026_snapshot_gen0095.gif", "label": "Generation 95", "kind": "snapshot", "gen": 95, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 3.91, "vhold": 0.54, "jitter": 0.84, "effort": 0.86, "peak": 1.0, "revs": 1.4, "caption": "hold 3.91 s \u00b7 hold velocity 0.54 rad/s \u00b7 jitter 0.84 \u00b7 effort 0.86 \u00b7 peak cos 1.00 \u00b7 revolutions 1.4"}, {"poster": "cards/027_snapshot_gen0096.png", "gif": "gifs/027_snapshot_gen0096.gif", "label": "Generation 96", "kind": "snapshot", "gen": 96, "arc": true, "arc_rank": 3, "arc_title": "holds by brute force", "hold": 4.84, "vhold": 0.44, "jitter": 0.86, "effort": 0.77, "peak": 1.0, "revs": 1.3, "caption": "hold 4.84 s \u00b7 hold velocity 0.44 rad/s \u00b7 jitter 0.86 \u00b7 effort 0.77 \u00b7 peak cos 1.00 \u00b7 revolutions 1.3"}, {"poster": "cards/028_snapshot_gen0098.png", "gif": "gifs/028_snapshot_gen0098.gif", "label": "Generation 98", "kind": "snapshot", "gen": 98, "arc": true, "arc_rank": 4, "arc_title": "smooth, efficient hold", "hold": 4.89, "vhold": 0.1, "jitter": 0.01, "effort": 0.16, "peak": 1.0, "revs": 1.0, "caption": "hold 4.89 s \u00b7 hold velocity 0.10 rad/s \u00b7 jitter 0.01 \u00b7 effort 0.16 \u00b7 peak cos 1.00 \u00b7 revolutions 1.0"}, {"poster": "cards/029_snapshot_gen0099.png", "gif": "gifs/029_snapshot_gen0099.gif", "label": "Generation 99", "kind": "snapshot", "gen": 99, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 4.5, "vhold": 0.18, "jitter": 0.01, "effort": 0.28, "peak": 1.0, "revs": 1.6, "caption": "hold 4.50 s \u00b7 hold velocity 0.18 rad/s \u00b7 jitter 0.01 \u00b7 effort 0.28 \u00b7 peak cos 1.00 \u00b7 revolutions 1.6"}, {"poster": "cards/030_snapshot_gen0100.png", "gif": "gifs/030_snapshot_gen0100.gif", "label": "Generation 100", "kind": "snapshot", "gen": 100, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 3.86, "vhold": 0.23, "jitter": 0.01, "effort": 0.28, "peak": 1.0, "revs": 1.6, "caption": "hold 3.86 s \u00b7 hold velocity 0.23 rad/s \u00b7 jitter 0.01 \u00b7 effort 0.28 \u00b7 peak cos 1.00 \u00b7 revolutions 1.6"}, {"poster": "cards/031_curated_best_\u00b7_41_params.png", "gif": "gifs/031_curated_best_\u00b7_41_params.gif", "label": "best \u00b7 41 params", "kind": "curated", "gen": 1000000000, "arc": false, "arc_rank": 999, "arc_title": "", "hold": 3.86, "vhold": 0.23, "jitter": 0.01, "effort": 0.28, "peak": 1.0, "revs": 1.6, "caption": "hold 3.86 s \u00b7 hold velocity 0.23 rad/s \u00b7 jitter 0.01 \u00b7 effort 0.28 \u00b7 peak cos 1.00 \u00b7 revolutions 1.6"}];
+let kind="all",sort="gen",mode="arc",view=[],cur=0;
+const grid=document.getElementById("grid"),lb=document.getElementById("lb");
+const varc=document.getElementById("varc"),vall=document.getElementById("vall"),filt=document.getElementById("filt");
+function setmode(m){mode=m;varc.classList.toggle("on",m==="arc");vall.classList.toggle("on",m==="all");
+ filt.style.opacity=m==="arc"?".5":"1";render();}
+varc.onclick=()=>setmode("arc");vall.onclick=()=>setmode("all");
+const kinds=["all",...new Set(DATA.map(d=>d.kind))];
+const kbox=document.getElementById("kinds");
+kinds.forEach(k=>{const b=document.createElement("button");b.textContent=k;b.className=k==="all"?"on":"";
+ b.onclick=()=>{kind=k;[...kbox.children].forEach(x=>x.classList.toggle("on",x.textContent===k));render()};kbox.appendChild(b)});
+document.querySelectorAll("#bar button[data-sort]").forEach(b=>b.onclick=()=>{
+ sort=b.dataset.sort;document.querySelectorAll("#bar button[data-sort]").forEach(x=>x.classList.toggle("on",x===b));render()});
+function play(card,d){if(!d.gif)return;const g=card.querySelector(".gif");g.src=d.gif+"?t="+(Date.now());card.classList.add("play");}
+function stop(card){card.classList.remove("play");}
+function render(){
+ const ASC=new Set(["gen","vhold","effort","jitter"]);   // lower is calmer/cheaper -> first
+ if(mode==="arc"){
+  view=DATA.filter(d=>d.arc).sort((a,b)=>a.arc_rank-b.arc_rank);   // narrative order
+ }else{
+  view=DATA.filter(d=>kind==="all"||d.kind===kind);
+  view.sort((a,b)=>ASC.has(sort)?a[sort]-b[sort]:b[sort]-a[sort]);
+ }
+ grid.innerHTML="";
+ view.forEach((d,i)=>{const c=document.createElement("div");c.className="card"+(d.arc?" arc":"");
+  c.innerHTML=`<div class="frame"><img src="${d.poster}" loading="lazy"><img class="gif" alt=""></div>`+
+   `<div class="meta"><b>${d.label}</b><div class="nums">${d.caption}</div></div>`;
+  c.onmouseenter=()=>play(c,d);c.onmouseleave=()=>stop(c);
+  c.onclick=()=>show(i);grid.appendChild(c)});
+ document.getElementById("count").textContent=view.length+" of "+DATA.length+" specimens";
+ document.getElementById("sortinfo").textContent=mode==="arc"?"0-to-hero arc (swing-up → catch → hold)"
+   :("sorted by "+sort+(kind==="all"?"":" · kind: "+kind));}
+if(!DATA.some(d=>d.arc))setmode("all"); else setmode("arc");
+function show(i){cur=i;const d=view[i];document.getElementById("lbimg").src=(d.gif||d.poster)+(d.gif?"?t="+Date.now():"");
+ document.getElementById("lbttl").textContent=d.label;
+ document.getElementById("lbcap").textContent=d.caption;
+ lb.style.display="flex"}
+function step(n){cur=(cur+n+view.length)%view.length;show(cur)}
+function closeLb(){lb.style.display="none"}
+document.getElementById("next").onclick=e=>{e.stopPropagation();step(1)};
+document.getElementById("prev").onclick=e=>{e.stopPropagation();step(-1)};
+document.getElementById("lbx").onclick=e=>{e.stopPropagation();closeLb()};
+lb.onclick=closeLb;document.querySelector(".dlg").onclick=e=>e.stopPropagation();
+document.addEventListener("keydown",e=>{if(lb.style.display!=="flex")return;
+ if(e.key==="ArrowRight")step(1);else if(e.key==="ArrowLeft")step(-1);else if(e.key==="Escape")closeLb()});
+render();
+</script></body></html>

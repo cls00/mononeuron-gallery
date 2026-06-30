@@ -1,0 +1,110 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bouncing Ball (video&#8594;video) — Behaviour Gallery</title><style>
+ :root{--face:#d4d0c8;--face2:#cbc7bd;--lite:#ffffff;--dark:#808080;--vdark:#404040;--accent:#2c5d57;--ink:#1b1b1b}
+ *{box-sizing:border-box}
+ body{margin:0;padding:24px;font:13px/1.5 Tahoma,"MS Sans Serif",Geneva,Verdana,sans-serif;color:var(--ink);background:#3c4448}
+ .app{max-width:1320px;margin:0 auto;background:var(--face);border:2px solid;border-color:var(--lite) var(--vdark) var(--vdark) var(--lite);padding:3px}
+ .hdr{background:var(--accent);color:#eef3f1;padding:7px 11px;border:2px solid;border-color:#4f857e #163230 #163230 #4f857e}
+ .hdr .name{font-weight:bold;font-size:15px;letter-spacing:.04em}
+ .hdr .home{float:right;font-size:12px;color:#cfe1dd;text-decoration:none;font-weight:bold}
+ .hdr .home:hover{color:#fff;text-decoration:underline}
+ .hdr .sub{font-size:12px;color:#bcd2ce;margin-top:2px}
+ .body{padding:9px}
+ fieldset{border:2px groove var(--face);margin:0 0 9px;padding:7px 10px;background:var(--face)}
+ legend{font-weight:bold;color:var(--accent);padding:0 5px}
+ .row{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin:3px 0}
+ .row b.lbl{width:62px;color:#333}
+ button{font:11px Tahoma,"MS Sans Serif",sans-serif;color:#000;cursor:pointer;padding:3px 11px;margin:1px;
+  border:2px solid;border-color:var(--lite) var(--vdark) var(--vdark) var(--lite);background:var(--face)}
+ button:hover{background:var(--face2)}
+ button:active,button.on{border-color:var(--vdark) var(--lite) var(--lite) var(--vdark);background:var(--face2);box-shadow:inset 1px 1px 2px rgba(0,0,0,.25)}
+ button.on{font-weight:bold;color:var(--accent)}
+ #grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:3px}
+ .card{background:var(--face);padding:2px;cursor:pointer;border:1px solid var(--dark);position:relative}
+ .card:hover{background:var(--face2)}
+ .card.hero{border:2px solid #2ecc71}
+ .card .frame{position:relative;border:1px solid var(--vdark);background:#000;overflow:hidden}
+ .card .frame img{width:100%;display:block;image-rendering:pixelated}
+ .card .frame .gif{position:absolute;inset:0;display:none}
+ .card.play .gif{display:block}
+ .badge{position:absolute;left:5px;top:5px;font-size:10px;font-weight:bold;padding:1px 7px;color:#fff;border:1px solid rgba(0,0,0,.4)}
+ .heromark{position:absolute;right:5px;top:5px;font-size:10px;font-weight:bold;padding:1px 7px;color:#063;background:#2ecc71;border:1px solid #063}
+ .play-tag{position:absolute;right:4px;bottom:4px;font-size:11px;padding:1px 6px;color:#eef3f1;background:rgba(44,93,87,.85);border:1px solid #163230;pointer-events:none}
+ .card.play .play-tag{display:none}
+ .meta{margin-top:3px;color:#222}
+ .meta .phase{font-weight:bold;font-size:12px;letter-spacing:.02em;text-transform:uppercase}
+ .meta .sub{color:#333;font-size:12px}
+ .meta .hero-note{color:#1f8b4c;font-weight:bold;font-size:11px;margin-left:6px}
+ .nums{color:#444;font-size:12px;margin-top:2px;font-family:"Courier New",monospace}
+ .status{display:flex;gap:5px;margin-top:3px;padding:2px}
+ .status span{border:2px solid;border-color:var(--dark) var(--lite) var(--lite) var(--dark);background:var(--face);padding:2px 9px;color:#333}
+ .status .grow{flex:1}
+ #lb{position:fixed;inset:0;background:rgba(10,14,16,.6);display:none;align-items:center;justify-content:center;z-index:20}
+ .dlg{background:var(--face);max-width:94vw;max-height:94vh;display:flex;flex-direction:column;padding:3px;
+  border:2px solid;border-color:var(--lite) var(--vdark) var(--vdark) var(--lite);box-shadow:0 10px 34px rgba(0,0,0,.55)}
+ .dlg .bar{background:var(--accent);color:#eef3f1;font-weight:bold;padding:5px 9px;display:flex;align-items:center;border:2px solid;border-color:#4f857e #163230 #163230 #4f857e}
+ .dlg .bar .grow{flex:1}
+ .dlg .pane{padding:9px;display:flex;align-items:center;gap:4px}
+ .dlg img{max-width:82vw;max-height:72vh;background:#000;border:2px solid;border-color:var(--vdark) var(--lite) var(--lite) var(--vdark);image-rendering:pixelated}
+ .nav{font:bold 24px Tahoma;color:var(--accent);padding:0 12px;cursor:pointer;user-select:none}
+ .nav:hover{color:#000}
+ #lbcap{padding:5px 9px;color:#222;font-family:"Courier New",monospace;border:2px solid;border-color:var(--dark) var(--lite) var(--lite) var(--dark);background:var(--face);margin-top:3px}
+</style></head><body>
+<div class="app">
+ <div class="hdr"><a class="home" href="../index.html">&#8962; all tasks</a><div class="name">Bouncing Ball (video&#8594;video) — Behaviour Gallery</div>
+  <div class="sub">A single Mononeuron predicting a bouncing ball from pixels alone &mdash; the behaviours that emerge over training, from stroboscopic collapse through fragmenting and phantom balls to tracking the bounce. Ground truth (green) toggles on or off; hover or tap a card to play it.</div></div>
+ <div class="body">
+  <fieldset><legend>View</legend>
+   <div class="row"><b class="lbl">Show:</b><span id="kinds"></span></div>
+   <div class="row"><b class="lbl">Ground truth:</b><button id="gton">On (green overlay)</button><button id="gtoff" class="on">Off (model only)</button></div>
+  </fieldset>
+  <fieldset><legend>Specimens</legend><div id="grid"></div></fieldset>
+ </div>
+ <div class="status"><span id="count"></span><span id="gtinfo"></span><span class="grow"></span>
+  <span>single interaction site &mdash; pixels in, pixels out</span></div>
+</div>
+<div id="lb"><div class="dlg">
+ <div class="bar"><span id="lbttl">specimen</span><span class="grow"></span><button id="lbx">Close</button></div>
+ <div class="pane"><div class="nav" id="prev">&#10094;</div><img id="lbimg"><div class="nav" id="next">&#10095;</div></div>
+ <div id="lbcap"></div>
+</div></div>
+<script>
+const DATA=[{"label": "Step 14,000", "kind": "progression", "phase": "tracks the bounce", "step": 14000, "order": 4, "poster_gt": "cards/0_7_014000_t5_gt.png", "gif_gt": "gifs/0_7_014000_t5_gt.gif", "poster_model": "cards/0_7_014000_t5_model.png", "gif_model": "gifs/0_7_014000_t5_model.gif", "poster": "cards/0_7_014000_t5_model.png", "gif": "gifs/0_7_014000_t5_gt.gif", "resid": 0.26, "speed": 0.87, "gt_speed": 1.39, "loop": true, "stage_label": "tracks the bounce", "stage_color": "#2ecc71", "hero": true, "caption": "tracks the bounce \u00b7 departs from true physics by 0.3 px \u00b7 speed 0.9 px/step (true 1.4)"}, {"label": "Step 200", "kind": "progression", "phase": "stroboscopic flashing", "step": 200, "order": 0, "poster_gt": "cards/0_0_000200_t4_gt.png", "gif_gt": "gifs/0_0_000200_t4_gt.gif", "poster_model": "cards/0_0_000200_t4_model.png", "gif_model": "gifs/0_0_000200_t4_model.gif", "poster": "cards/0_0_000200_t4_gt.png", "gif": "gifs/0_0_000200_t4_gt.gif", "resid": 17.69, "speed": 9.04, "gt_speed": 1.39, "loop": false, "stage_label": "stroboscopic flashing", "stage_color": "#9b59b6", "hero": false, "caption": "stroboscopic flashing \u00b7 departs from true physics by 17.7 px \u00b7 speed 9.0 px/step (true 1.4)"}, {"label": "Step 9,000", "kind": "progression", "phase": "phantom balls", "step": 9000, "order": 1, "poster_gt": "cards/0_1_009000_t4_gt.png", "gif_gt": "gifs/0_1_009000_t4_gt.gif", "poster_model": "cards/0_1_009000_t4_model.png", "gif_model": "gifs/0_1_009000_t4_model.gif", "poster": "cards/0_1_009000_t4_gt.png", "gif": "gifs/0_1_009000_t4_gt.gif", "resid": 14.7, "speed": 7.82, "gt_speed": 1.39, "loop": false, "stage_label": "phantom balls", "stage_color": "#8e44ad", "hero": false, "caption": "phantom balls \u00b7 departs from true physics by 14.7 px \u00b7 speed 7.8 px/step (true 1.4)"}, {"label": "Step 30,000", "kind": "progression", "phase": "breaks apart", "step": 30000, "order": 2, "poster_gt": "cards/0_2_030000_t2_gt.png", "gif_gt": "gifs/0_2_030000_t2_gt.gif", "poster_model": "cards/0_2_030000_t2_model.png", "gif_model": "gifs/0_2_030000_t2_model.gif", "poster": "cards/0_2_030000_t2_gt.png", "gif": "gifs/0_2_030000_t2_gt.gif", "resid": 13.27, "speed": 8.95, "gt_speed": 1.39, "loop": false, "stage_label": "breaks apart", "stage_color": "#c0392b", "hero": false, "caption": "breaks apart \u00b7 departs from true physics by 13.3 px \u00b7 speed 8.9 px/step (true 1.4)"}, {"label": "Step 15,000", "kind": "progression", "phase": "imperfect bounce", "step": 15000, "order": 3, "poster_gt": "cards/0_6_015000_t6_gt.png", "gif_gt": "gifs/0_6_015000_t6_gt.gif", "poster_model": "cards/0_6_015000_t6_model.png", "gif_model": "gifs/0_6_015000_t6_model.gif", "poster": "cards/0_6_015000_t6_gt.png", "gif": "gifs/0_6_015000_t6_gt.gif", "resid": 0.3, "speed": 0.62, "gt_speed": 1.39, "loop": true, "stage_label": "imperfect bounce", "stage_color": "#d4ac0d", "hero": false, "caption": "imperfect bounce \u00b7 departs from true physics by 0.3 px \u00b7 speed 0.6 px/step (true 1.4)"}, {"label": "Throw 0", "kind": "held-out", "phase": "tracks the bounce", "step": 30000, "order": 5, "poster_gt": "cards/1_throw0_gt.png", "gif_gt": "gifs/1_throw0_gt.gif", "poster_model": "cards/1_throw0_model.png", "gif_model": "gifs/1_throw0_model.gif", "poster": "cards/1_throw0_gt.png", "gif": "gifs/1_throw0_gt.gif", "resid": 0.28, "speed": 0.86, "gt_speed": 1.39, "loop": true, "stage_label": "tracks the bounce", "stage_color": "#2ecc71", "hero": false, "caption": "tracks the bounce \u00b7 departs from true physics by 0.3 px \u00b7 speed 0.9 px/step (true 1.4)"}, {"label": "Throw 1", "kind": "held-out", "phase": "tracks the bounce", "step": 30000, "order": 6, "poster_gt": "cards/1_throw1_gt.png", "gif_gt": "gifs/1_throw1_gt.gif", "poster_model": "cards/1_throw1_model.png", "gif_model": "gifs/1_throw1_model.gif", "poster": "cards/1_throw1_gt.png", "gif": "gifs/1_throw1_gt.gif", "resid": 0.42, "speed": 0.98, "gt_speed": 1.39, "loop": true, "stage_label": "tracks the bounce", "stage_color": "#2ecc71", "hero": false, "caption": "tracks the bounce \u00b7 departs from true physics by 0.4 px \u00b7 speed 1.0 px/step (true 1.4)"}, {"label": "Throw 2", "kind": "held-out", "phase": "breaks apart", "step": 30000, "order": 7, "poster_gt": "cards/1_throw2_gt.png", "gif_gt": "gifs/1_throw2_gt.gif", "poster_model": "cards/1_throw2_model.png", "gif_model": "gifs/1_throw2_model.gif", "poster": "cards/1_throw2_gt.png", "gif": "gifs/1_throw2_gt.gif", "resid": 13.27, "speed": 8.95, "gt_speed": 1.39, "loop": false, "stage_label": "breaks apart", "stage_color": "#c0392b", "hero": false, "caption": "breaks apart \u00b7 departs from true physics by 13.3 px \u00b7 speed 8.9 px/step (true 1.4)"}, {"label": "Throw 3", "kind": "held-out", "phase": "tracks the bounce", "step": 30000, "order": 8, "poster_gt": "cards/1_throw3_gt.png", "gif_gt": "gifs/1_throw3_gt.gif", "poster_model": "cards/1_throw3_model.png", "gif_model": "gifs/1_throw3_model.gif", "poster": "cards/1_throw3_gt.png", "gif": "gifs/1_throw3_gt.gif", "resid": 0.31, "speed": 1.0, "gt_speed": 1.39, "loop": true, "stage_label": "tracks the bounce", "stage_color": "#2ecc71", "hero": false, "caption": "tracks the bounce \u00b7 departs from true physics by 0.3 px \u00b7 speed 1.0 px/step (true 1.4)"}, {"label": "Throw 4", "kind": "held-out", "phase": "tracks the bounce", "step": 30000, "order": 9, "poster_gt": "cards/1_throw4_gt.png", "gif_gt": "gifs/1_throw4_gt.gif", "poster_model": "cards/1_throw4_model.png", "gif_model": "gifs/1_throw4_model.gif", "poster": "cards/1_throw4_gt.png", "gif": "gifs/1_throw4_gt.gif", "resid": 0.37, "speed": 0.86, "gt_speed": 1.39, "loop": true, "stage_label": "tracks the bounce", "stage_color": "#2ecc71", "hero": false, "caption": "tracks the bounce \u00b7 departs from true physics by 0.4 px \u00b7 speed 0.9 px/step (true 1.4)"}, {"label": "Throw 5", "kind": "held-out", "phase": "tracks the bounce", "step": 30000, "order": 10, "poster_gt": "cards/1_throw5_gt.png", "gif_gt": "gifs/1_throw5_gt.gif", "poster_model": "cards/1_throw5_model.png", "gif_model": "gifs/1_throw5_model.gif", "poster": "cards/1_throw5_gt.png", "gif": "gifs/1_throw5_gt.gif", "resid": 0.58, "speed": 0.78, "gt_speed": 1.39, "loop": true, "stage_label": "tracks the bounce", "stage_color": "#2ecc71", "hero": false, "caption": "tracks the bounce \u00b7 departs from true physics by 0.6 px \u00b7 speed 0.8 px/step (true 1.4)"}, {"label": "Throw 6", "kind": "held-out", "phase": "tracks the bounce", "step": 30000, "order": 11, "poster_gt": "cards/1_throw6_gt.png", "gif_gt": "gifs/1_throw6_gt.gif", "poster_model": "cards/1_throw6_model.png", "gif_model": "gifs/1_throw6_model.gif", "poster": "cards/1_throw6_gt.png", "gif": "gifs/1_throw6_gt.gif", "resid": 0.39, "speed": 0.9, "gt_speed": 1.39, "loop": true, "stage_label": "tracks the bounce", "stage_color": "#2ecc71", "hero": false, "caption": "tracks the bounce \u00b7 departs from true physics by 0.4 px \u00b7 speed 0.9 px/step (true 1.4)"}, {"label": "Throw 7", "kind": "held-out", "phase": "tracks the bounce", "step": 30000, "order": 12, "poster_gt": "cards/1_throw7_gt.png", "gif_gt": "gifs/1_throw7_gt.gif", "poster_model": "cards/1_throw7_model.png", "gif_model": "gifs/1_throw7_model.gif", "poster": "cards/1_throw7_gt.png", "gif": "gifs/1_throw7_gt.gif", "resid": 0.33, "speed": 1.17, "gt_speed": 1.39, "loop": true, "stage_label": "tracks the bounce", "stage_color": "#2ecc71", "hero": false, "caption": "tracks the bounce \u00b7 departs from true physics by 0.3 px \u00b7 speed 1.2 px/step (true 1.4)"}, {"label": "Ground truth", "kind": "reference", "phase": "ground truth", "step": 30000, "order": 13, "poster_gt": "cards/2_truth_gt.png", "gif_gt": "gifs/2_truth_gt.gif", "poster_model": "cards/2_truth_model.png", "gif_model": "gifs/2_truth_model.gif", "poster": "cards/2_truth_gt.png", "gif": "gifs/2_truth_gt.gif", "resid": 0.0, "speed": 1.39, "gt_speed": 1.39, "loop": true, "stage_label": "ground truth", "stage_color": "#16a085", "hero": false, "caption": "the true damped bounce \u00b7 speed 1.4 px/step"}];
+let kind="all",gt=false,view=[],cur=0;   // default: the model's own prediction; GT is a toggle
+const grid=document.getElementById("grid"),lb=document.getElementById("lb");
+const kinds=["all",...new Set(DATA.map(d=>d.kind))];
+const kbox=document.getElementById("kinds");
+kinds.forEach(k=>{const b=document.createElement("button");b.textContent=k;b.className=k==="all"?"on":"";
+ b.onclick=()=>{kind=k;[...kbox.children].forEach(x=>x.classList.toggle("on",x.textContent===k));render()};kbox.appendChild(b)});
+const gtOn=document.getElementById("gton"),gtOff=document.getElementById("gtoff");
+gtOn.onclick=()=>{gt=true;gtOn.classList.add("on");gtOff.classList.remove("on");render()};
+gtOff.onclick=()=>{gt=false;gtOff.classList.add("on");gtOn.classList.remove("on");render()};
+const poster=d=>gt?d.poster_gt:d.poster_model, clip=d=>gt?d.gif_gt:d.gif_model;
+function play(card,d){const g=card.querySelector(".gif");g.src=clip(d)+"?t="+(Date.now());card.classList.add("play");}
+function stop(card){card.classList.remove("play");}
+function render(){
+ view=DATA.filter(d=>kind==="all"||d.kind===kind).sort((a,b)=>a.order-b.order);
+ grid.innerHTML="";
+ view.forEach((d,i)=>{const c=document.createElement("div");c.className="card"+(d.hero?" hero":"");
+  const heronote=d.hero?'<span class="hero-note">★ best result</span>':"";
+  c.innerHTML=`<div class="frame"><img src="${poster(d)}" loading="lazy"><img class="gif" alt=""></div>`+
+   `<div class="meta"><b>${d.label}</b>${heronote}<div class="nums">${d.caption}</div></div>`;
+  c.onmouseenter=()=>play(c,d);c.onmouseleave=()=>stop(c);
+  c.onclick=()=>show(i);grid.appendChild(c)});
+ document.getElementById("count").textContent=view.length+" of "+DATA.length+" clips";
+ document.getElementById("gtinfo").textContent="ground truth "+(gt?"shown (green)":"hidden")+(kind==="all"?"":" · "+kind);}
+function show(i){cur=i;const d=view[i];document.getElementById("lbimg").src=clip(d)+"?t="+Date.now();
+ document.getElementById("lbttl").textContent=d.label;
+ document.getElementById("lbcap").textContent=d.caption;
+ lb.style.display="flex"}
+function step(n){cur=(cur+n+view.length)%view.length;show(cur)}
+function closeLb(){lb.style.display="none"}
+document.getElementById("next").onclick=e=>{e.stopPropagation();step(1)};
+document.getElementById("prev").onclick=e=>{e.stopPropagation();step(-1)};
+document.getElementById("lbx").onclick=e=>{e.stopPropagation();closeLb()};
+lb.onclick=closeLb;document.querySelector(".dlg").onclick=e=>e.stopPropagation();
+document.addEventListener("keydown",e=>{if(lb.style.display!=="flex")return;
+ if(e.key==="ArrowRight")step(1);else if(e.key==="ArrowLeft")step(-1);else if(e.key==="Escape")closeLb()});
+render();
+</script></body></html>

@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mononeuron Galleries</title><style>
+ :root{--face:#d4d0c8;--face2:#cbc7bd;--lite:#ffffff;--dark:#808080;--vdark:#404040;--accent:#2c5d57;--ink:#1b1b1b}
+ *{box-sizing:border-box}
+ body{margin:0;padding:24px;font:13px/1.5 Tahoma,"MS Sans Serif",Geneva,Verdana,sans-serif;color:var(--ink);background:#3c4448}
+ .app{max-width:1100px;margin:0 auto;background:var(--face);border:2px solid;border-color:var(--lite) var(--vdark) var(--vdark) var(--lite);padding:3px}
+ .hdr{background:var(--accent);color:#eef3f1;padding:7px 11px;border:2px solid;border-color:#4f857e #163230 #163230 #4f857e}
+ .hdr .name{font-weight:bold;font-size:15px;letter-spacing:.04em}
+ .hdr .sub{font-size:12px;color:#bcd2ce;margin-top:2px}
+ .body{padding:11px}
+ #grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:7px}
+ a.tile{display:block;text-decoration:none;color:var(--ink);background:var(--face);padding:4px;
+  border:1px solid var(--dark)}
+ a.tile:hover{background:var(--face2)}
+ /* fixed-height frame, poster centred & contained — so the square ball poster and the
+    wide trace cards become uniform tiles instead of one huge square next to thin strips */
+ a.tile .frame{height:168px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--vdark);background:#0f1416;overflow:hidden}
+ a.tile img{max-width:100%;max-height:100%;width:auto;height:auto;display:block}
+ a.tile .name{font-weight:bold;color:var(--accent);margin-top:6px;font-size:13px}
+ a.tile .n{color:#555;font-size:11px;font-family:"Courier New",monospace}
+ .empty{padding:18px;color:#444}
+</style></head><body>
+<div class="app">
+ <div class="hdr"><div class="name">Mononeuron Galleries</div>
+  <div class="sub">Per-task progression galleries &mdash; one single-interaction-site controller per specimen</div></div>
+ <div class="body"><div id="grid"></div><div id="empty" class="empty" style="display:none">No galleries built yet.</div></div>
+</div>
+<script>
+const TILES=[{"task": "ball_video", "name": "Bouncing Ball Physics", "count": 14, "poster": "ball_video/cards/0_7_014000_t5_model.png"}, {"task": "cart_pole", "name": "Cart-Pole Swing-Up", "count": 32, "poster": "cart_pole/cards/028_snapshot_gen0098.png"}, {"task": "double_pendulum", "name": "Double Pendulum", "count": 24, "poster": "double_pendulum/cards/004_snapshot_gen0125.png"}, {"task": "mnist_generate", "name": "Conditional MNIST Generation", "count": 23, "poster": "mnist_generate/cards/0_prog_2066.png"}];
+const grid=document.getElementById("grid");
+if(!TILES.length)document.getElementById("empty").style.display="block";
+TILES.forEach(t=>{const a=document.createElement("a");a.className="tile";a.href=t.task+"/index.html";
+ a.innerHTML=`<div class="frame">${t.poster?`<img src="${t.poster}" loading="lazy">`:""}</div>`+
+  `<div class="name">${t.name||t.task.replace(/_/g," ")}</div><div class="n">${t.count} cards</div>`;
+ grid.appendChild(a)});
+</script></body></html>

@@ -1,0 +1,99 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Conditional MNIST Generation — Results Gallery</title><style>
+ :root{--face:#d4d0c8;--face2:#cbc7bd;--lite:#ffffff;--dark:#808080;--vdark:#404040;--accent:#2c5d57;--ink:#1b1b1b}
+ *{box-sizing:border-box}
+ body{margin:0;padding:24px;font:13px/1.5 Tahoma,"MS Sans Serif",Geneva,Verdana,sans-serif;color:var(--ink);background:#3c4448}
+ .app{max-width:1320px;margin:0 auto;background:var(--face);border:2px solid;border-color:var(--lite) var(--vdark) var(--vdark) var(--lite);padding:3px}
+ .hdr{background:var(--accent);color:#eef3f1;padding:7px 11px;border:2px solid;border-color:#4f857e #163230 #163230 #4f857e}
+ .hdr .name{font-weight:bold;font-size:15px;letter-spacing:.04em}
+ .hdr .home{float:right;font-size:12px;color:#cfe1dd;text-decoration:none;font-weight:bold}
+ .hdr .home:hover{color:#fff;text-decoration:underline}
+ .hdr .sub{font-size:12px;color:#bcd2ce;margin-top:2px}
+ .body{padding:9px}
+ fieldset{border:2px groove var(--face);margin:0 0 9px;padding:7px 10px;background:var(--face)}
+ legend{font-weight:bold;color:var(--accent);padding:0 5px}
+ .row{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin:3px 0}
+ .row b.lbl{width:46px;color:#333}
+ button{font:11px Tahoma,"MS Sans Serif",sans-serif;color:#000;cursor:pointer;padding:3px 11px;margin:1px;
+  border:2px solid;border-color:var(--lite) var(--vdark) var(--vdark) var(--lite);background:var(--face)}
+ button:hover{background:var(--face2)}
+ button:active,button.on{border-color:var(--vdark) var(--lite) var(--lite) var(--vdark);background:var(--face2);box-shadow:inset 1px 1px 2px rgba(0,0,0,.25)}
+ button.on{font-weight:bold;color:var(--accent)}
+ #grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:4px}
+ .card{background:var(--face);padding:3px;cursor:pointer;border:1px solid var(--dark);position:relative}
+ .card:hover{background:var(--face2)}
+ .card.hero{border:2px solid var(--accent)}
+ .card .frame{position:relative;border:1px solid var(--vdark);background:#000;overflow:hidden;display:flex;justify-content:center}
+ .card .frame img{max-width:100%;display:block;image-rendering:pixelated}
+ .card .frame .gif{position:absolute;inset:0;margin:auto;display:none}
+ .card.play .gif{display:block}
+ .play-tag{position:absolute;right:4px;bottom:4px;font-size:11px;padding:1px 6px;color:#eef3f1;background:rgba(44,93,87,.85);border:1px solid #163230;pointer-events:none}
+ .card.play .play-tag{display:none}
+ .meta{margin-top:3px;color:#222}
+ .nums{color:#444;font-size:12px;margin-top:2px;font-family:"Courier New",monospace}
+ .status{display:flex;gap:5px;margin-top:3px;padding:2px}
+ .status span{border:2px solid;border-color:var(--dark) var(--lite) var(--lite) var(--dark);background:var(--face);padding:2px 9px;color:#333}
+ .status .grow{flex:1}
+ #lb{position:fixed;inset:0;background:rgba(10,14,16,.6);display:none;align-items:center;justify-content:center;z-index:20}
+ .dlg{background:var(--face);max-width:94vw;max-height:94vh;display:flex;flex-direction:column;padding:3px;
+  border:2px solid;border-color:var(--lite) var(--vdark) var(--vdark) var(--lite);box-shadow:0 10px 34px rgba(0,0,0,.55)}
+ .dlg .bar{background:var(--accent);color:#eef3f1;font-weight:bold;padding:5px 9px;display:flex;align-items:center;border:2px solid;border-color:#4f857e #163230 #163230 #4f857e}
+ .dlg .bar .grow{flex:1}
+ .dlg .pane{padding:9px;display:flex;align-items:center;gap:4px}
+ .dlg img{max-width:82vw;max-height:72vh;background:#000;border:2px solid;border-color:var(--vdark) var(--lite) var(--lite) var(--vdark);image-rendering:pixelated}
+ .nav{font:bold 24px Tahoma;color:var(--accent);padding:0 12px;cursor:pointer;user-select:none}
+ .nav:hover{color:#000}
+ #lbcap{padding:5px 9px;color:#222;font-family:"Courier New",monospace;border:2px solid;border-color:var(--dark) var(--lite) var(--lite) var(--dark);background:var(--face);margin-top:3px}
+</style></head><body>
+<div class="app">
+ <div class="hdr"><a class="home" href="../index.html">&#8962; all tasks</a><div class="name">Conditional MNIST Generation — Results Gallery</div>
+  <div class="sub">One single-interaction-site Mononeuron generating the ten MNIST digits &mdash; no encoder, no output projection; the image itself is the recurrent state (a self-loop), formed over 24 autoregressive steps. The class one-hot conditions which digit the site settles into. Hover or tap a card to play it.</div></div>
+ <div class="body">
+  <fieldset><legend>View</legend>
+   <div class="row"><b class="lbl">Show:</b><span id="kinds"></span></div>
+  </fieldset>
+  <fieldset><legend>Specimens</legend><div id="grid"></div></fieldset>
+ </div>
+ <div class="status"><span id="count"></span><span class="grow"></span>
+  <span>single interaction site &mdash; the image is the self-loop</span></div>
+</div>
+<div id="lb"><div class="dlg">
+ <div class="bar"><span id="lbttl">specimen</span><span class="grow"></span><button id="lbx">Close</button></div>
+ <div class="pane"><div class="nav" id="prev">&#10094;</div><img id="lbimg"><div class="nav" id="next">&#10095;</div></div>
+ <div id="lbcap"></div>
+</div></div>
+<script>
+const DATA=[{"label": "Step 0", "kind": "progression", "order": 0, "poster": "cards/0_prog_0000.png", "gif": "gifs/0_prog_0000.gif", "caption": "training step 0 \u00b7 generation MSE 0.2124 (1.00\u00d7 the constant-image baseline)", "hero": false}, {"label": "Step 21", "kind": "progression", "order": 1, "poster": "cards/0_prog_0021.png", "gif": "gifs/0_prog_0021.gif", "caption": "training step 21 \u00b7 generation MSE 0.0501 (0.24\u00d7 the constant-image baseline)", "hero": false}, {"label": "Step 129", "kind": "progression", "order": 2, "poster": "cards/0_prog_0129.png", "gif": "gifs/0_prog_0129.gif", "caption": "training step 129 \u00b7 generation MSE 0.0318 (0.15\u00d7 the constant-image baseline)", "hero": false}, {"label": "Step 186", "kind": "progression", "order": 3, "poster": "cards/0_prog_0186.png", "gif": "gifs/0_prog_0186.gif", "caption": "training step 186 \u00b7 generation MSE 0.0038 (0.02\u00d7 the constant-image baseline)", "hero": false}, {"label": "Step 2,066", "kind": "progression", "order": 4, "poster": "cards/0_prog_2066.png", "gif": "gifs/0_prog_2066.gif", "caption": "training step 2,066 \u00b7 generation MSE 0.0000 (0.00\u00d7 the constant-image baseline)", "hero": true}, {"label": "Digit 0", "kind": "settle", "order": 5, "poster": "cards/1_settle_0.png", "gif": "gifs/1_settle_0.gif", "caption": "class 0 forming from a noise init \u2014 the image is the self-loop", "hero": false}, {"label": "Digit 1", "kind": "settle", "order": 6, "poster": "cards/1_settle_1.png", "gif": "gifs/1_settle_1.gif", "caption": "class 1 forming from a noise init \u2014 the image is the self-loop", "hero": false}, {"label": "Digit 2", "kind": "settle", "order": 7, "poster": "cards/1_settle_2.png", "gif": "gifs/1_settle_2.gif", "caption": "class 2 forming from a noise init \u2014 the image is the self-loop", "hero": false}, {"label": "Digit 3", "kind": "settle", "order": 8, "poster": "cards/1_settle_3.png", "gif": "gifs/1_settle_3.gif", "caption": "class 3 forming from a noise init \u2014 the image is the self-loop", "hero": false}, {"label": "Digit 4", "kind": "settle", "order": 9, "poster": "cards/1_settle_4.png", "gif": "gifs/1_settle_4.gif", "caption": "class 4 forming from a noise init \u2014 the image is the self-loop", "hero": false}, {"label": "Digit 5", "kind": "settle", "order": 10, "poster": "cards/1_settle_5.png", "gif": "gifs/1_settle_5.gif", "caption": "class 5 forming from a noise init \u2014 the image is the self-loop", "hero": false}, {"label": "Digit 6", "kind": "settle", "order": 11, "poster": "cards/1_settle_6.png", "gif": "gifs/1_settle_6.gif", "caption": "class 6 forming from a noise init \u2014 the image is the self-loop", "hero": false}, {"label": "Digit 7", "kind": "settle", "order": 12, "poster": "cards/1_settle_7.png", "gif": "gifs/1_settle_7.gif", "caption": "class 7 forming from a noise init \u2014 the image is the self-loop", "hero": false}, {"label": "Digit 8", "kind": "settle", "order": 13, "poster": "cards/1_settle_8.png", "gif": "gifs/1_settle_8.gif", "caption": "class 8 forming from a noise init \u2014 the image is the self-loop", "hero": false}, {"label": "Digit 9", "kind": "settle", "order": 14, "poster": "cards/1_settle_9.png", "gif": "gifs/1_settle_9.gif", "caption": "class 9 forming from a noise init \u2014 the image is the self-loop", "hero": false}, {"label": "Morph 3 \u2192 8", "kind": "morph", "order": 15, "poster": "cards/2_morph_3_8.png", "gif": "gifs/2_morph_3_8.gif", "caption": "settle 3, then switch the class one-hot to 8 keeping the image", "hero": false}, {"label": "Morph 1 \u2192 7", "kind": "morph", "order": 16, "poster": "cards/2_morph_1_7.png", "gif": "gifs/2_morph_1_7.gif", "caption": "settle 1, then switch the class one-hot to 7 keeping the image", "hero": false}, {"label": "Morph 4 \u2192 9", "kind": "morph", "order": 17, "poster": "cards/2_morph_4_9.png", "gif": "gifs/2_morph_4_9.gif", "caption": "settle 4, then switch the class one-hot to 9 keeping the image", "hero": false}, {"label": "Morph 0 \u2192 6", "kind": "morph", "order": 18, "poster": "cards/2_morph_0_6.png", "gif": "gifs/2_morph_0_6.gif", "caption": "settle 0, then switch the class one-hot to 6 keeping the image", "hero": false}, {"label": "Scratch & regenerate 0", "kind": "scratch", "order": 19, "poster": "cards/3_scratch_0.png", "gif": "gifs/3_scratch_0.gif", "caption": "class 0 settled, scribbled over with a pencil, then regenerated as it autoregresses", "hero": false}, {"label": "Scratch & regenerate 2", "kind": "scratch", "order": 20, "poster": "cards/3_scratch_2.png", "gif": "gifs/3_scratch_2.gif", "caption": "class 2 settled, scribbled over with a pencil, then regenerated as it autoregresses", "hero": false}, {"label": "Scratch & regenerate 3", "kind": "scratch", "order": 21, "poster": "cards/3_scratch_3.png", "gif": "gifs/3_scratch_3.gif", "caption": "class 3 settled, scribbled over with a pencil, then regenerated as it autoregresses", "hero": false}, {"label": "Scratch & regenerate 7", "kind": "scratch", "order": 22, "poster": "cards/3_scratch_7.png", "gif": "gifs/3_scratch_7.gif", "caption": "class 7 settled, scribbled over with a pencil, then regenerated as it autoregresses", "hero": false}];
+const KIND_LABEL={progression:"training progression",settle:"generate (settle)",morph:"morph",scratch:"scratch & regenerate"};
+let kind="all",view=[],cur=0;
+const grid=document.getElementById("grid"),lb=document.getElementById("lb");
+const kinds=["all",...new Set(DATA.map(d=>d.kind))];
+const kbox=document.getElementById("kinds");
+kinds.forEach(k=>{const b=document.createElement("button");b.textContent=KIND_LABEL[k]||k;b.className=k==="all"?"on":"";
+ b.onclick=()=>{kind=k;[...kbox.children].forEach(x=>x.classList.toggle("on",x===b));render()};kbox.appendChild(b)});
+function play(card,d){const g=card.querySelector(".gif");g.src=d.gif+"?t="+(Date.now());card.classList.add("play");}
+function stop(card){card.classList.remove("play");}
+function render(){
+ view=DATA.filter(d=>kind==="all"||d.kind===kind).sort((a,b)=>a.order-b.order);
+ grid.innerHTML="";
+ view.forEach((d,i)=>{const c=document.createElement("div");c.className="card"+(d.hero?" hero":"");
+  c.innerHTML=`<div class="frame"><img src="${d.poster}" loading="lazy"><img class="gif" alt=""><span class="play-tag">hover to play</span></div>`+
+   `<div class="meta"><b>${d.label}</b><div class="nums">${d.caption}</div></div>`;
+  c.onmouseenter=()=>play(c,d);c.onmouseleave=()=>stop(c);
+  c.onclick=()=>show(i);grid.appendChild(c)});
+ document.getElementById("count").textContent=view.length+" of "+DATA.length+" specimens";}
+function show(i){cur=i;const d=view[i];document.getElementById("lbimg").src=d.gif+"?t="+Date.now();
+ document.getElementById("lbttl").textContent=d.label;
+ document.getElementById("lbcap").textContent=d.caption;
+ lb.style.display="flex"}
+function step(n){cur=(cur+n+view.length)%view.length;show(cur)}
+function closeLb(){lb.style.display="none"}
+document.getElementById("next").onclick=e=>{e.stopPropagation();step(1)};
+document.getElementById("prev").onclick=e=>{e.stopPropagation();step(-1)};
+document.getElementById("lbx").onclick=e=>{e.stopPropagation();closeLb()};
+lb.onclick=closeLb;document.querySelector(".dlg").onclick=e=>e.stopPropagation();
+document.addEventListener("keydown",e=>{if(lb.style.display!=="flex")return;
+ if(e.key==="ArrowRight")step(1);else if(e.key==="ArrowLeft")step(-1);else if(e.key==="Escape")closeLb()});
+render();
+</script></body></html>
