@@ -54,9 +54,9 @@
   <div class="sub">Single inverted pendulum on a cart &mdash; each specimen swings up from deadhang; hover (or tap) a card to replay it</div></div>
  <div class="body">
   <fieldset><legend>View</legend>
-   <div class="row"><b class="lbl">Show:</b><button id="varc" class="on">0-to-hero arc</button><button id="vall">full population</button></div>
+   <div class="row"><b class="lbl">Show:</b><button id="varc" class="on">progression</button><button id="vall">all checkpoints</button></div>
   </fieldset>
-  <fieldset id="filt"><legend>Filter &amp; sort (full population)</legend>
+  <fieldset id="filt"><legend>Filter &amp; sort (all checkpoints)</legend>
    <div class="row"><b class="lbl">Kind:</b><span id="kinds"></span></div>
    <div class="row" id="bar"><b class="lbl">Sort:</b><button data-sort="gen" class="on">generation</button><button data-sort="hold" class="">hold</button><button data-sort="vhold" class="">velocity</button><button data-sort="revs" class="">revolutions</button><button data-sort="effort" class="">effort</button><button data-sort="jitter" class="">jitter</button><button data-sort="peak" class="">peak cos</button></div>
   </fieldset>
@@ -101,7 +101,7 @@ function render(){
   c.onmouseenter=()=>play(c,d);c.onmouseleave=()=>stop(c);
   c.onclick=()=>show(i);grid.appendChild(c)});
  document.getElementById("count").textContent=view.length+" of "+DATA.length+" specimens";
- document.getElementById("sortinfo").textContent=mode==="arc"?"0-to-hero arc (swing-up → catch → hold)"
+ document.getElementById("sortinfo").textContent=mode==="arc"?"behavioural progression (swing-up → catch → hold)"
    :("sorted by "+sort+(kind==="all"?"":" · kind: "+kind));}
 if(!DATA.some(d=>d.arc))setmode("all"); else setmode("arc");
 function show(i){cur=i;const d=view[i];document.getElementById("lbimg").src=(d.gif||d.poster)+(d.gif?"?t="+Date.now():"");
