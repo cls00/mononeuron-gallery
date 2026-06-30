@@ -1,9 +1,10 @@
 # Tensorial Mononeuron — results gallery
 
-Interactive showcase for the **Tensorial Mononeuron**: a single interaction site
-(one neuron) that combines its incoming signal flows by tensor contraction once per
-step, holds state in self-loop wires, and gains effective depth by reusing the same
-site over time.
+Interactive showcase for the **Tensorial Mononeuron** — an architecture with a single
+interaction site (one neuron). Its inputs are signal flows; the site combines them in
+one tensor contraction, which forms products across flows, instead of weighted sums.
+Self-loop wires carry signals back to the input at later steps — earlier inputs, past
+outputs, or a loop's own internal state.
 
 **Live site: [cls00.github.io/mononeuron-gallery](https://cls00.github.io/mononeuron-gallery/)**
 
